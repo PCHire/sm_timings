@@ -4,6 +4,8 @@ import us.hebi.matlab.mat.types.Matrix;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     static final int DATA_POINTS = 1000;
@@ -47,6 +49,28 @@ public class Main {
         for (int i = 0; i < DATA_POINTS; i++) {
             for (int j = 0; j < i; j++) {
                 sparseTriDistance(data.get(i), data.get(j));
+            }
+        }
+        long end = System.currentTimeMillis();
+        return end - start;
+    }
+
+    static long measureSparseSM0Impl0(List<SparseRep> data) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < DATA_POINTS; i++) {
+            for (int j = 0; j < i; j++) {
+                SparseRep.triDistance(data.get(i), data.get(j));
+            }
+        }
+        long end = System.currentTimeMillis();
+        return end - start;
+    }
+
+    static long measureSparseSMImpl1(List<SparseRep> data) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < DATA_POINTS; i++) {
+            for (int j = 0; j < i; j++) {
+                SparseRep.triDistance2(data.get(i), data.get(j));
             }
         }
         long end = System.currentTimeMillis();
@@ -107,8 +131,13 @@ public class Main {
         ArrayList<float[]> prunedSmData = loadMat("/home/bc89/Documents/data/mf_softmax_pruned/0.mat");
         ArrayList<float[]> fc6Data = loadMat("/home/bc89/Documents/data/mf_alexnet_fc6/0.mat");
 
+        List<SparseRep> sparsePrunedSMData = prunedSmData.stream().map(a -> new SparseRep( toDoubles(a) ) ).collect(Collectors.toList());
+
+
         long sm = measureFullSM(smData);
         long pruned = measureSparseSM(prunedSmData);
+        long al1 = measureSparseSM0Impl0(sparsePrunedSMData);
+        long al2 = measureSparseSMImpl1(sparsePrunedSMData);
         long fc6 = measureFC6(fc6Data);
 
         // Warm up
@@ -127,6 +156,8 @@ public class Main {
         for (int i = 0; i < repetitions; i++) {
             sm = measureFullSM(smData);
             pruned = measureSparseSM(prunedSmData);
+            al1 = measureSparseSM0Impl0(sparsePrunedSMData);
+            al2 = measureSparseSMImpl1(sparsePrunedSMData);
             fc6 = measureFC6(fc6Data);
 
             smTime += sm;
@@ -136,6 +167,14 @@ public class Main {
 
         System.out.println("Softmax took " + smTime / repetitions  + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax Pruned took " + prunedSmTimes / repetitions  + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Al Softmax Pruned0 took " + prunedSmTimes / repetitions  + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Al Softmax Pruned1 took " + prunedSmTimes / repetitions  + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax took " + fc6Times / repetitions  + " ms on average over " + repetitions + " repetitions");
+    }
+
+    private static double[] toDoubles(float[] floats) {
+        double[] doubles = new double[floats.length];
+        for( int i = 0; i < floats.length; i++ ) { doubles[i] = floats[i]; }
+        return doubles;
     }
 }
