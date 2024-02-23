@@ -155,6 +155,8 @@ public class Main {
         long smTime = 0;
         long prunedSmTimes = 0;
         long fc6Times = 0;
+        long al1Times = 0;
+        long al2Times = 0;
 
         for (int i = 0; i < repetitions; i++) {
             sm = measureFullSM(smData);
@@ -166,12 +168,14 @@ public class Main {
             smTime += sm;
             prunedSmTimes += pruned;
             fc6Times += fc6;
+            al1Times += al1;
+            al2Times += al2;
         }
 
         System.out.println("Softmax took " + smTime / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax Pruned took " + prunedSmTimes / repetitions + " ms on average over " + repetitions + " repetitions");
-        System.out.println("Al Softmax Pruned0 took " + al1 / repetitions + " ms on average over " + repetitions + " repetitions");
-        System.out.println("Al Softmax Pruned1 took " + al2 / repetitions + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Al Softmax Pruned0 took " + al1Times / repetitions + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Al Softmax Pruned1 took " + al2Times / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax took " + fc6Times / repetitions + " ms on average over " + repetitions + " repetitions");
     }
 }

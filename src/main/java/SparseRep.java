@@ -112,8 +112,6 @@ public class SparseRep {
         return 1 - accumulator;
     }
 
-
-
     @Override
     public String toString() {
         return "SparseRep{" +
