@@ -13,7 +13,7 @@ public class TestZipTriDistance {
     private static double[] doubles7 = new double[]{ 1.0d, 1.0d, 0.0d, 0.0d};
     private static double[] doubles8 = new double[]{ 0.0d, 1.0d, 0.0d, 1.0d};
     private static double[] doubles9 = new double[]{ 0.0d, 1.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 1.0d};
-    private static double[] doubles10 = new double[]{ 0.1d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d};
+    private static double[] doubles10 = new double[]{ 1.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d};
 
     private static SparseRep sr1 = new SparseRep( doubles1 );
     private static SparseRep sr2 = new SparseRep( doubles2 );

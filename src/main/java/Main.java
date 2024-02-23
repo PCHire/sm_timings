@@ -169,6 +169,7 @@ public class Main {
         long fc6Times = 0;
         long al1Times = 0;
         long al2Times = 0;
+        long zipTimes = 0;
 
         for (int i = 0; i < repetitions; i++) {
             sm = measureFullSM(smData);
@@ -176,12 +177,14 @@ public class Main {
             al1 = measureSparseSM0Impl0(sparsePrunedSMData);
             al2 = measureSparseSMImpl1(sparsePrunedSMData);
             fc6 = measureFC6(fc6Data);
+            zip = measureSparseZipSMImpl(sparsePrunedSMData);
 
             smTime += sm;
             prunedSmTimes += pruned;
             fc6Times += fc6;
             al1Times += al1;
             al2Times += al2;
+            zipTimes += zip;
         }
 
         System.out.println("Softmax took " + smTime / repetitions + " ms on average over " + repetitions + " repetitions");
@@ -189,5 +192,6 @@ public class Main {
         System.out.println("Al Softmax Pruned0 took " + al1Times / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Al Softmax Pruned1 took " + al2Times / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax took " + fc6Times / repetitions + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Zip took " + zipTimes / repetitions + " ms on average over " + repetitions + " repetitions");
     }
 }
