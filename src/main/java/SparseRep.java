@@ -103,7 +103,7 @@ public class SparseRep {
         double accumulator = 0d;
 
         for( int a_index = 0; a_index < alen; a_index++ ) {
-            if( b_index >= blen ) {
+            if( b_index >= blen - 1 ) {
                 // run out of bs
                 break; // the for loop
             } else if (aindices[a_index] == bindices[b_index]) { // two indices match - do accumulator
