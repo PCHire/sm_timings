@@ -43,7 +43,37 @@ public class SparseRep {
         } else { // must be the case that b is behind
             return zipAccumulator( a_index, aindices, adata, b_index + 1,bindices, bdata, accumulator );
         }
+    }
 
+    static double zipTriDistance2(SparseRep a, SparseRep b) {
+
+        if( a.indices.length == 0 || b.indices.length == 0 ) { //  one empty
+            return 1;
+        } else {
+            return 1 - zipAccumulator2( 0, a.indices, a.data, 0, b.indices, b.data );
+        }
+    }
+
+    static double zipAccumulator2(int a_index, int[] aindices, double[] adata, int b_index, int[] bindices, double[] bdata) {
+
+        double result = 0;
+
+        while (true) {
+
+            if (a_index >= aindices.length || b_index >= bindices.length) { // either have run off the end
+                return result;
+            } else if (aindices[a_index] == bindices[b_index]) { // two indices match - do accumulator and move both on
+
+                result += (2 * adata[a_index] * bdata[b_index]) / (adata[a_index] + bdata[b_index]);
+                a_index++;
+                b_index++;
+
+            } else if (aindices[a_index] < bindices[b_index]) {         // a behind - move aindex on
+                a_index++;
+            } else { // must be the case that b is behind
+                b_index++;
+            }
+        }
     }
 
     static double triDistance(SparseRep a, SparseRep b) {

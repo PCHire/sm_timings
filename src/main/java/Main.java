@@ -88,6 +88,17 @@ public class Main {
         return end - start;
     }
 
+    static long measureSparseZip2SMImpl(List<SparseRep> data) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < DATA_POINTS; i++) {
+            for (int j = 0; j < i; j++) {
+                SparseRep.zipTriDistance2(data.get(i), data.get(j));
+            }
+        }
+        long end = System.currentTimeMillis();
+        return end - start;
+    }
+
     static long measureFullSM(ArrayList<double[]> data) {
         long start = System.currentTimeMillis();
         for (int i = 0; i < DATA_POINTS; i++) {
@@ -151,6 +162,7 @@ public class Main {
         long al2 = measureSparseSMImpl1(sparsePrunedSMData);
         long zip = measureSparseZipSMImpl(sparsePrunedSMData);
         long fc6 = measureFC6(fc6Data);
+        long zip2 =measureSparseZip2SMImpl(sparsePrunedSMData);
 
         // Warm up
         for (int i = 0; i < 4; i++) {
@@ -160,6 +172,7 @@ public class Main {
             al1 = measureSparseSM0Impl0(sparsePrunedSMData);
             al2 = measureSparseSMImpl1(sparsePrunedSMData);
             zip = measureSparseZipSMImpl(sparsePrunedSMData);
+            zip2 =measureSparseZip2SMImpl(sparsePrunedSMData);
         }
 
         int repetitions = 20;
@@ -170,6 +183,7 @@ public class Main {
         long al1Times = 0;
         long al2Times = 0;
         long zipTimes = 0;
+        long zip2Times = 0;
 
         for (int i = 0; i < repetitions; i++) {
             sm = measureFullSM(smData);
@@ -178,6 +192,7 @@ public class Main {
             al2 = measureSparseSMImpl1(sparsePrunedSMData);
             fc6 = measureFC6(fc6Data);
             zip = measureSparseZipSMImpl(sparsePrunedSMData);
+            zip2 = measureSparseZip2SMImpl(sparsePrunedSMData);
 
             smTime += sm;
             prunedSmTimes += pruned;
@@ -185,6 +200,7 @@ public class Main {
             al1Times += al1;
             al2Times += al2;
             zipTimes += zip;
+            zip2Times += zip2;
         }
 
         System.out.println("Softmax took " + smTime / repetitions + " ms on average over " + repetitions + " repetitions");
@@ -193,5 +209,6 @@ public class Main {
         System.out.println("Al Softmax Pruned1 took " + al2Times / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Softmax took " + fc6Times / repetitions + " ms on average over " + repetitions + " repetitions");
         System.out.println("Zip took " + zipTimes / repetitions + " ms on average over " + repetitions + " repetitions");
+        System.out.println("Zip2 took " + zip2Times / repetitions + " ms on average over " + repetitions + " repetitions");
     }
 }
