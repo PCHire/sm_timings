@@ -140,7 +140,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         ArrayList<double[]> smData = loadMat("data/mf_softmax_0.mat");
         ArrayList<double[]> prunedSmData = loadMat("data/mf_softmax_pruned_0.mat");
-        ArrayList<double[]> fc6Data = loadMat("data/mf_alexnet_fc6_0.mat");
+        ArrayList<double[]> fc6Data = loadMat("data/mf_fc6_0.mat");
 
         List<SparseRep> sparsePrunedSMData = prunedSmData.stream().map(a -> new SparseRep( a ) ).collect(Collectors.toList());
 
