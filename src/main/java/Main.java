@@ -77,6 +77,17 @@ public class Main {
         return end - start;
     }
 
+    static long measureSparseZipSMImpl(List<SparseRep> data) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < DATA_POINTS; i++) {
+            for (int j = 0; j < i; j++) {
+                SparseRep.zipTriDistance(data.get(i), data.get(j));
+            }
+        }
+        long end = System.currentTimeMillis();
+        return end - start;
+    }
+
     static long measureFullSM(ArrayList<double[]> data) {
         long start = System.currentTimeMillis();
         for (int i = 0; i < DATA_POINTS; i++) {
@@ -138,6 +149,7 @@ public class Main {
         long pruned = measureSparseSM(prunedSmData);
         long al1 = measureSparseSM0Impl0(sparsePrunedSMData);
         long al2 = measureSparseSMImpl1(sparsePrunedSMData);
+        long zip = measureSparseZipSMImpl(sparsePrunedSMData);
         long fc6 = measureFC6(fc6Data);
 
         // Warm up
@@ -147,6 +159,7 @@ public class Main {
             fc6 = measureFC6(fc6Data);
             al1 = measureSparseSM0Impl0(sparsePrunedSMData);
             al2 = measureSparseSMImpl1(sparsePrunedSMData);
+            zip = measureSparseZipSMImpl(sparsePrunedSMData);
         }
 
         int repetitions = 20;

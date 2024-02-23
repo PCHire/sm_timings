@@ -22,6 +22,30 @@ public class SparseRep {
         data = ar_data.stream().mapToDouble( a-> a ).toArray();
     }
 
+    static double zipTriDistance(SparseRep a, SparseRep b) {
+
+        if( a.indices.length == 0 || b.indices.length == 0 ) { //  one empty
+            return 1;
+        } else {
+            return 1 - zipAccumulator( 0, a.indices, a.data, 0, b.indices, b.data, 0.0d );
+        }
+    }
+
+    static double zipAccumulator(int a_index, int[] aindices, double[] adata, int b_index, int[] bindices, double[] bdata, double accumulator) {
+
+        if( a_index >= aindices.length || b_index >= bindices.length ) { // either have run off the end
+            return accumulator;
+        } else if (aindices[a_index] == bindices[b_index]) { // two indices match - do accumulator and move both on
+            return zipAccumulator( a_index + 1, aindices, adata, b_index + 1,bindices, bdata,
+                    accumulator + (2 * adata[a_index] * bdata[b_index]) / (adata[a_index] + bdata[b_index] ) );
+        } else if (aindices[a_index] < bindices[b_index]) {         // a behind - move aindex on
+            return zipAccumulator( a_index + 1, aindices, adata, b_index,bindices, bdata, accumulator );
+        } else { // must be the case that b is behind
+            return zipAccumulator( a_index, aindices, adata, b_index + 1,bindices, bdata, accumulator );
+        }
+
+    }
+
     static double triDistance(SparseRep a, SparseRep b) {
         double accumulator = 0d;
 
