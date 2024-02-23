@@ -12,6 +12,8 @@ public class TestTriDistance2 {
     private static double[] doubles6 = new double[]{ 0.2d, 0.2d, 0.2d, 0.1d};
     private static double[] doubles7 = new double[]{ 1.0d, 1.0d, 0.0d, 0.0d};
     private static double[] doubles8 = new double[]{ 0.0d, 1.0d, 0.0d, 1.0d};
+    private static double[] doubles9 = new double[]{ 0.0d, 1.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 1.0d};
+    private static double[] doubles10 = new double[]{ 0.1d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d};
 
     private static SparseRep sr1 = new SparseRep( doubles1 );
     private static SparseRep sr2 = new SparseRep( doubles2 );
@@ -21,6 +23,10 @@ public class TestTriDistance2 {
     private static SparseRep sr6 = new SparseRep( doubles6 );
     private static SparseRep sr7 = new SparseRep( doubles7 );
     private static SparseRep sr8 = new SparseRep( doubles8 );
+
+    private static SparseRep sr9 = new SparseRep( doubles9 );
+
+    private static SparseRep sr10 = new SparseRep( doubles10 );
 
 
     public TestTriDistance2() {
@@ -51,5 +57,13 @@ public class TestTriDistance2 {
     @Test
     public void testdistance4() {
         assertEquals(SparseRep.sparseTriDistance(doubles7,doubles8), SparseRep.triDistance2(sr7,sr8), 0.0001d);
+    }
+
+    @Test public void testdistanceDiffLengths1() {
+        assertEquals(SparseRep.sparseTriDistance(doubles9,doubles10), SparseRep.triDistance(sr9,sr10), 0.0001d);
+    }
+
+    @Test public void testdistanceDiffLengths2() {
+        assertEquals(SparseRep.sparseTriDistance(doubles10,doubles9), SparseRep.triDistance(sr10,sr9), 0.0001d);
     }
 }

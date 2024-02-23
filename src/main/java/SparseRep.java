@@ -53,8 +53,6 @@ public class SparseRep {
     }
 
     static double triDistance2(SparseRep a, SparseRep b) {
-        double accumulator = 0d;
-
         double[] adata = a.data;
         double[] bdata = b.data;
 
@@ -78,21 +76,28 @@ public class SparseRep {
         }
 
         int b_index = 0;
+        double accumulator = 0d;
 
         for( int a_index = 0; a_index < alen; a_index++ ) {
-            if (aindices[a_index] == bindices[b_index]) { // two indices match - do accumulator
+            if( b_index >= blen ) {
+                // run out of bs
+                break; // the for loop
+            } else if (aindices[a_index] == bindices[b_index]) { // two indices match - do accumulator
                 accumulator += (2 * adata[a_index] * bdata[b_index]) / (adata[a_index] + bdata[b_index]);
                 b_index = b_index + 1;
-            } else if (aindices[a_index] > bindices[b_index]) {
+            } else {
                 // move b on
                 while( aindices[a_index] > bindices[b_index] ) {
-                    b_index = b_index +1;
-                    if(b_index == blen) {
-                        // run out of bs so exit
-                        return 1 - accumulator;
+                    b_index = b_index + 1;
+
+                    if (b_index == blen - 1) { // run out of bs so stop incrementing but b_index still legal and we may have a match
+                        break; // the while loop
                     }
                 }
-
+                if (aindices[a_index] == bindices[b_index]) { // if the indices are equal need to do accumulator
+                    accumulator += (2 * adata[a_index] * bdata[b_index]) / (adata[a_index] + bdata[b_index]);
+                    b_index = b_index + 1;
+                }
             }
         }
 
