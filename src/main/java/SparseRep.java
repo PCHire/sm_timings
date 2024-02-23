@@ -71,7 +71,7 @@ public class SparseRep {
         int a_min_index = aindices[0];
         int a_max_index = aindices[alen-1];
         int b_min_index = bindices[0];
-        int b_max_index = aindices[blen-1];
+        int b_max_index = bindices[blen-1];
 
         if( a_max_index < b_min_index || b_max_index < a_min_index ) { // no overlap
             return 1;
