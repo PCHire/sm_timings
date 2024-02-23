@@ -127,12 +127,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        ArrayList<double[]> smData = loadMat("/home/bc89/Documents/data/mf_softmax/0.mat");
-        ArrayList<double[]> prunedSmData = loadMat("/home/bc89/Documents/data/mf_softmax_pruned/0.mat");
-        ArrayList<double[]> fc6Data = loadMat("/home/bc89/Documents/data/mf_alexnet_fc6/0.mat");
+        ArrayList<double[]> smData = loadMat("data/mf_softmax_0.mat");
+        ArrayList<double[]> prunedSmData = loadMat("data/mf_softmax_pruned_0.mat");
+        ArrayList<double[]> fc6Data = loadMat("data/mf_alexnet_fc6_0.mat");
 
         List<SparseRep> sparsePrunedSMData = prunedSmData.stream().map(a -> new SparseRep( a ) ).collect(Collectors.toList());
-
 
 
         long sm = measureFullSM(smData);
